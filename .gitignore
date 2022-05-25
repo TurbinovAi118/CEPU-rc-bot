@@ -1,5 +1,7 @@
 #telegram bot token
 tkn.py
+#client-secret google
+cepu-bot.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

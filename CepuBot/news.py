@@ -18,5 +18,5 @@ def get_all_news(message):
         bot.send_message(message.chat.id, f'{name[i].text}\n'
                                           'Более подробная информация представлена по [ссылке]'
                                           f'(https://kipu-rc.ru{name[i].a.get("href")})',
-                         parse_mode='Markdown')
+                         parse_mode='Markdown', disable_web_page_preview=True)
 

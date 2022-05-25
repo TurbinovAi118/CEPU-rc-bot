@@ -16,7 +16,35 @@ import db
 check_valid = False
 
 
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['start'])
+# раздел регистрации пользователя
+def registration(message):
+
+    if check_valid is False:
+        bot.send_message(message.chat.id, "Зарегистрируйтесь чтобы продолжить")
+
+    us_id = message.from_user.id
+
+    try:
+        get_existing_user(user_id=us_id)
+        print('user joined', us_id, db.user_name)
+    except:
+        # create_pre_user(user_id=us_id, fio=fio)
+        create_pre_user(user_id=us_id)
+        print('user created', us_id)
+
+    reg_keyboard = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
+
+    item_name = types.KeyboardButton("Ввести ФИО")
+    item_group = types.KeyboardButton("Ввести группу")
+    item_faculty = types.KeyboardButton("Ввести кафедру")
+    item_go_back = types.KeyboardButton("Закончить регистрацию")
+
+    reg_keyboard.add(item_name, item_group, item_faculty, item_go_back)
+    bot.send_message(message.chat.id, "Пожалуйста, введите информацию о себе\n"
+                                      "(прим. Регистрация только для студентов ВУЗа)", reply_markup=reg_keyboard)
+
+
 def hello_screen(message):
 
     try:
@@ -46,7 +74,7 @@ def hello_screen(message):
         pass
 
     keyboard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-    item_signUp = types.KeyboardButton("Регистрация")
+    item_signUp = types.KeyboardButton("Персональные данные")
     item_get_all_news = types.KeyboardButton("Последние новости университета")
 
     item_schedule = types.KeyboardButton("Расписание")
@@ -63,14 +91,16 @@ def hello_screen(message):
     keyboard.add(item_jobs, item_vacancies, item_internship)
     keyboard.add(item_courses, item_library, item_association, item_site, item_signUp)
 
-    if db.user_name is not None:
-        bot.send_message(message.chat.id, f"Здравствуйте {db.user_name}! \n"
+    user_name = db.user_name
+
+    if user_name is not None:
+        bot.send_message(message.chat.id, f"Здравствуйте {user_name}! \n"
                                           "Вас приветствует информационный чат-бот КИПУ им. Февзи Якубова, "
                                           "который поможет вам узнать различную информаию, "
                                           "будет держать в курсе последних новостей университета, "
                                           "а также предоставит персональное расписание занятий.",
                          reply_markup=keyboard)
-        db.user_name = ''
+        user_name = None
     else:
         bot.send_message(message.chat.id, "Здравствуйте! \n"
                                           "Вас приветствует информационный чат-бот КИПУ им. Февзи Якубова, "
@@ -78,20 +108,6 @@ def hello_screen(message):
                                           "будет держать в курсе последних новостей университета, "
                                           "а также предоставит персональное расписание занятий.",
                          reply_markup=keyboard)
-
-
-# раздел регистрации пользователя
-def registration(message):
-    reg_keyboard = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
-
-    item_name = types.KeyboardButton("Ввести ФИО")
-    item_group = types.KeyboardButton("Ввести группу")
-    item_faculty = types.KeyboardButton("Ввести кафедру")
-    item_go_back = types.KeyboardButton("Закончить регистрацию")
-
-    reg_keyboard.add(item_name, item_group, item_faculty, item_go_back)
-    bot.send_message(message.chat.id, "Пожалуйста, введите информацию о себе\n"
-                                      "(прим. Регистрация только для студентов ВУЗа)", reply_markup=reg_keyboard)
 
 
 # запись имени пользователя в БД
@@ -220,7 +236,11 @@ def check_user(message):
 
 @bot.message_handler(content_types=['text'])
 def reg_handle(message):
-    if message.text == "Регистрация":
+    if message.text == "Персональные данные":
+        if check_valid:
+            bot.send_message(message.chat.id, f"Ваши персональные данные:\n"
+                                              f"{db.user_second_name}, {db.user_name}, {db.user_third_name}, \n"
+                                              f"{db.user_group}, {db.user_department}")
         registration(message)
 
     elif message.text == "Расписание":
@@ -355,7 +375,8 @@ def reg_handle(message):
 
     elif message.text == 'Закончить регистрацию':
         check_user(message)
-        hello_screen(message)
+        if check_valid:
+            hello_screen(message)
 
 
 bot.infinity_polling()

@@ -5,7 +5,7 @@ from telebot import types
 def vacancies_info(message):
     bot.send_message(message.chat.id, 'Список вакантных мест для приема/перевода обучающихся можно найти по [ссылке]'
                                       '(https://kipu-rc.ru/student/vakantnye-mesta-priema-perevoda.html)',
-                     parse_mode='Markdown')
+                     parse_mode='Markdown', disable_web_page_preview=True)
 
 
 def jobs_info(message):
@@ -40,22 +40,22 @@ def internship_info(message):
                                       'Участвуя в проекте, вузы и учреждения СПО могут '
                                       'значительно расширить информационную базу для '
                                       'выполнения курсовых и выпускных квалификационных работ обучающихся, '
-                                      'а также установить новые партнерские контакты с крупнейшими работодателями. '
+                                      'а также установить новые партнерские контакты с крупнейшими работодателями. \n'
                                       'Более подробная информация представлена по [ссылке]'
                                       '(https://kipu-rc.ru/student/profstazhirovki.html)',
-                     parse_mode='Markdown')
+                     parse_mode='Markdown', disable_web_page_preview=True)
 
 
 def courses_info(message):
     bot.send_message(message.chat.id, 'Вся информация, касающаяся кружковой деятельности представлена по [ссылке]'
                                       '(https://kipu-rc.ru/student/krujkovaya-rabota.html)',
-                     parse_mode='Markdown')
+                     parse_mode='Markdown', disable_web_page_preview=True)
 
 
 def library_info(message):
     bot.send_message(message.chat.id, 'Электронная библиотека находится [тут]'
                                       '(http://www.cepulib.ru/index.php/ru/)',
-                     parse_mode='Markdown')
+                     parse_mode='Markdown', disable_web_page_preview=True)
 
 
 def association_info(message):
@@ -64,12 +64,12 @@ def association_info(message):
                                       'созданная по инициативе обучающихся КИПУ имени Февзи Якубова, '
                                       'объединяющая на добровольной основе студентов '
                                       'активно участвующих в научно-исследовательской, '
-                                      'инновационной и научно-просветительской работе. '
+                                      'инновационной и научно-просветительской работе. \n'
                                       'Более подробную информацию можно найти по [ссылке]'
                                       '(https://kipu-rc.ru/student/studencheskoe-nauchnoe-ob-edinenie.html)',
-                     parse_mode='Markdown')
+                     parse_mode='Markdown', disable_web_page_preview=True)
 
 
 def site_info(message):
     bot.send_message(message.chat.id, 'Сайт дистанционного обучения находится [тут]'
-                                      '(e.kipu-rc.ru/)', parse_mode='Markdown')
+                                      '(e.kipu-rc.ru/)', parse_mode='Markdown', disable_web_page_preview=True)
